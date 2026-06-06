@@ -1,0 +1,164 @@
+import { z }
+from "zod" export const emotionalTemperatureSchema = z.enum(
+        [
+  "CALM",
+  "ANXIOUS",
+  "DEFENSIVE",
+  "EXCITED",
+]
+    ) export const userIntentSchema = z.enum(
+        [
+  "FLIRTING",
+  "APPROVAL",
+  "JOKING",
+  "TESTING",
+  "CONNECTING",
+]
+    ) export const relationshipPolaritySchema = z.enum([
+  "FLAT",
+  "BALANCED",
+  "INTENSE",
+]) export const responseToneSchema = z.enum(
+        [
+  "warm",
+  "teasing",
+  "challenging",
+  "guarded",
+  "playful",
+  "neutral",
+]
+    ) export const gravityActionSchema = z.enum(
+        [
+  "increase_tension",
+  "decrease_tension",
+  "deepen_connection",
+  "introduce_uncertainty",
+  "test_confidence",
+  "reward_behavior",
+]
+    ) export const userStateSchema = z.object(
+        { confidence: z.number().min(0).max(100),
+        emotionalTemperature: emotionalTemperatureSchema,
+        intent: userIntentSchema,
+        riskBehavior: z.object(
+            { overexplaining: z.number().min(0).max(100),
+            peoplePleasing: z.number().min(0).max(100),
+            withdrawing: z.number().min(0).max(100),
+            }
+        ),
+        skillLevel: z.number().min(0).max(100),
+        }
+    ) export const characterStateSchema = z.object(
+        { openness: z.number().min(0).max(100),
+        interest: z.number().min(0).max(100),
+        trust: z.number().min(0).max(100),
+        curiosity: z.number().min(0).max(100),
+        emotionalSafety: z.number().min(0).max(100),
+        attraction: z.number().min(0).max(100).optional(),
+        resistance: z.number().min(0).max(100),
+        skepticism: z.number().min(0).max(100),
+        }
+    ) export const relationshipStateSchema = z.object(
+        { tension: z.number().min(0).max(100),
+        rapport: z.number().min(0).max(100),
+        dominanceBalance: z.number().min(-100).max(100),
+        emotionalPacing: z.number().min(0).max(100),
+        polarity: relationshipPolaritySchema,
+        }
+    ) export const personalityVectorSchema = z.object(
+        { warmth: z.number().min(0).max(100),
+        openness: z.number().min(0).max(100),
+        dominance: z.number().min(0).max(100),
+        teasing: z.number().min(0).max(100),
+        emotionalDepth: z.number().min(0).max(100),
+        skepticism: z.number().min(0).max(100),
+        }
+    ) export const memorySignalSchema = z.object(
+        { id: z.string(),
+        memoryType: z.enum(
+            ["SHORT_TERM", "LONG_TERM", "EPISODE", "PROFILE", "SUMMARY"]
+        ),
+        content: z.string(),
+        relevance: z.number().min(0).max(100),
+        importance: z.number().min(0).max(100),
+        source: z.string().optional(),
+        }
+    ) export const interpretationResultSchema = z.object(
+        { userIsDoing: z.string(),
+        emotionalRead: z.string(),
+        validationSeeking: z.number().min(0).max(100),
+        controlSeeking: z.number().min(0).max(100),
+        connectionSeeking: z.number().min(0).max(100),
+        confidenceSignal: z.enum(["low", "medium", "high"]),
+        escalationSignal: z.enum(["flattening", "steady", "escalating"]),
+        keyObservations: z.array(z.string()),
+        }
+    ) export const stateDeltaSchema = z.object(
+        { user: userStateSchema.partial(),
+        character: characterStateSchema.partial(),
+        relationship: relationshipStateSchema.partial(),
+        }
+    ) export const relationshipUpdateResultSchema = z.object(
+        { delta: stateDeltaSchema,
+        detectedNeediness: z.enum(["low", "medium", "high"]),
+        detectedConfidence: z.enum(["low", "medium", "high"]),
+        contradictionMode: z.enum(
+            [
+    "interest_hesitation",
+    "warmth_boundary",
+    "playfulness_resistance",
+    "curiosity_skepticism",
+  ]
+        ),
+        gravityAction: gravityActionSchema,
+        reasoningTags: z.array(z.string()),
+        }
+    ) export const responseGenerationPlanSchema = z.object(
+        { tone: responseToneSchema,
+        primaryGoal: gravityActionSchema,
+        secondaryEmotion: z.string(),
+        contradictionMode: z.enum(
+            [
+    "interest_hesitation",
+    "warmth_boundary",
+    "playfulness_resistance",
+    "curiosity_skepticism",
+  ]
+        ),
+        pacing: z.enum(["slow", "medium", "fast"]),
+        lengthTarget: z.enum(["short", "medium", "long"]),
+        shouldChallenge: z.boolean(),
+        shouldValidate: z.boolean(),
+        shouldTease: z.boolean(),
+        shouldSetBoundary: z.boolean(),
+        responseNotes: z.array(z.string()),
+        }
+    ) export const generatedResponseSchema = z.object(
+        { text: z.string().min(1),
+        tone: responseToneSchema,
+        confidence: z.number().min(0).max(100),
+        expectedUserEffect: z.string(),
+        usedSignals: z.array(z.string()),
+        }
+    ) export const turnScoreSchema = z.object(
+        { empathy: z.number().min(0).max(100),
+        clarity: z.number().min(0).max(100),
+        confidence: z.number().min(0).max(100),
+        adaptability: z.number().min(0).max(100),
+        emotionalRegulation: z.number().min(0).max(100),
+        outcomeScore: z.number().min(0).max(100),
+        }
+    ) export const threeLayerEngineOutputSchema = z.object(
+        { interpretation: interpretationResultSchema,
+        relationshipUpdate: relationshipUpdateResultSchema,
+        plan: responseGenerationPlanSchema,
+        response: generatedResponseSchema,
+        snapshot: z.object(
+            { userState: userStateSchema,
+            characterState: characterStateSchema,
+            relationshipState: relationshipStateSchema,
+            }
+        ),
+        score: turnScoreSchema.optional(),
+        }
+    ) export type UserState = z.infer < typeof userStateSchema > export type CharacterState = z.infer < typeof characterStateSchema > export type RelationshipState = z.infer < typeof relationshipStateSchema > export type PersonalityVector = z.infer < typeof personalityVectorSchema > export type MemorySignal = z.infer < typeof memorySignalSchema > export type InterpretationResult = z.infer < typeof interpretationResultSchema > export type RelationshipUpdateResult = z.infer < typeof relationshipUpdateResultSchema > export type ResponseGenerationPlan = z.infer < typeof responseGenerationPlanSchema > export type GeneratedResponse = z.infer < typeof generatedResponseSchema > export type TurnScore = z.infer < typeof turnScoreSchema > export type ThreeLayerEngineOutput = z.infer < typeof threeLayerEngineOutputSchema >

@@ -1,0 +1,16 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/score/route": "app/api/score/route.js",
+  "/api/session/[sessionId]/route": "app/api/session/[sessionId]/route.js",
+  "/api/session/route": "app/api/session/route.js",
+  "/api/chat/route": "app/api/chat/route.js",
+  "/(auth)/sign-in/page": "app/(auth)/sign-in/page.js",
+  "/(auth)/sign-up/page": "app/(auth)/sign-up/page.js",
+  "/page": "app/page.js",
+  "/(marketing)/page": "app/(marketing)/page.js",
+  "/(app)/chat/[sessionId]/page": "app/(app)/chat/[sessionId]/page.js",
+  "/(app)/simulate/page": "app/(app)/simulate/page.js",
+  "/(app)/recap/[sessionId]/page": "app/(app)/recap/[sessionId]/page.js",
+  "/(marketing)/about/page": "app/(marketing)/about/page.js",
+  "/(app)/dashboard/page": "app/(app)/dashboard/page.js"
+}

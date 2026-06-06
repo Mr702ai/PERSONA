@@ -1,0 +1,53 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "install",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: install",
+			"detail": "install dependencies from package"
+		},
+		{
+			"type": "npm",
+			"script": "start",
+			"label": "npm: start",
+			"detail": "run Expo development server",
+			"problemMatcher": []
+		},
+		{
+			"type": "npm",
+			"script": "android",
+			"label": "npm: android",
+			"detail": "run the app on Android device or emulator",
+			"problemMatcher": []
+		},
+		{
+			"type": "npm",
+			"script": "ios",
+			"label": "npm: ios",
+			"detail": "run the app on iOS simulator",
+			"problemMatcher": []
+		},
+		{
+			"type": "npm",
+			"script": "web",
+			"label": "npm: web",
+			"detail": "run Expo web app",
+			"problemMatcher": []
+		},
+		{
+			"type": "typescript",
+			"tsconfig": "tsconfig.json",
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"label": "tsc: build - tsconfig.json"
+		}
+	]
+}
